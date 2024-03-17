@@ -10,33 +10,40 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User } from '../models/user.interface';
-import { Observable } from 'rxjs';
+import { RegisterDto } from '../dto/register.dto';
+import { LoginDto } from '../dto/login.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post()
-  create(@Body() user: User): Observable<User> {
+  @Post('/register')
+  create(@Body() user: RegisterDto): Promise<RegisterDto> {
     return this.userService.create(user);
   }
+
+  @Post('/login')
+  login(@Body() user: LoginDto): Promise<object> {
+    return this.userService.login(user);
+  }
+
   @Get(':id')
-  findOne(@Param() params): Observable<User> {
+  findOne(@Param() params): Promise<User> {
     return this.userService.findOne(params.id);
   }
   @Get()
-  findAll(): Observable<User[]> {
+  findAll(): Promise<User[]> {
     return this.userService.findaAll();
   }
   @Delete(':id')
-  deleteOne(@Param('id', ParseIntPipe) id: number): Observable<any> {
+  deleteOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.deleteOne(id);
   }
   @Put(':id')
   updateOne(
     @Param('id', ParseIntPipe) id: number,
     @Body() user: User,
-  ): Observable<any> {
+  ): Promise<any> {
     return this.userService.updateOne(id, user);
   }
 }
