@@ -53,7 +53,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"\",\r\n    \"username\": \"\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Admin\",\r\n    \"username\": \"Admin\",\r\n    \"email\": \"ad@admin.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -61,13 +61,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/user",
+							"raw": "localhost:3000/user/register",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"user"
+								"user",
+								"register"
 							]
 						}
 					},
@@ -115,6 +116,73 @@
 							"path": [
 								"user",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"hh@test.com\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update role of user (admins only)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNzEwODA2NTMyLCJleHAiOjE3MTA4MTY1MzJ9.Zg1JzQ_uFYYyBX65YMT7g_YHs3tN41jVl-Q8OBOTDt4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/user/role/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"role",
+								"2"
 							]
 						}
 					},

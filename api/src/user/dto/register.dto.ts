@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { UserRole } from '../models/user.interface';
 
 export class RegisterDto {
   @IsString()
@@ -16,4 +17,7 @@ export class RegisterDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  role: UserRole;
 }

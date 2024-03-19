@@ -1,12 +1,14 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
+  Request,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../models/user.entity';
 import { Repository } from 'typeorm';
-import { User } from '../models/user.interface';
+import { User, UserRole } from '../models/user.interface';
 import { AuthService } from 'src/auth/service/auth.service';
 import { RegisterDto } from '../dto/register.dto';
 import { UpdateDto } from '../dto/update.dto';
@@ -21,8 +23,21 @@ export class UserService {
   ) {}
 
   async create(user: RegisterDto): Promise<RegisterDto> {
+    if (
+      (await this.userRepository.findOne({ where: { email: user.email } })) ||
+      (await this.userRepository.findOne({
+        where: { username: user.username },
+      }))
+    ) {
+      throw new BadRequestException('email or username already exists');
+    }
     const hashedPassword = await this.authService.hashPassword(user.password);
-    return this.userRepository.save({ ...user, password: hashedPassword });
+    const savedUser = await this.userRepository.save({
+      ...user,
+      password: hashedPassword,
+    });
+    delete savedUser.password;
+    return savedUser;
   }
 
   async findaAll(): Promise<User[]> {
@@ -59,6 +74,10 @@ export class UserService {
     }
     delete user.password;
     return this.authService.generateJwtToken(user);
+  }
+
+  updateRoleOfUser(role: UserRole, id: string): Promise<any> {
+    return this.userRepository.update(id, { role });
   }
 
   async validateUser(email: string, password: string) {
