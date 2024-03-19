@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  Request,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +12,11 @@ import { AuthService } from 'src/auth/service/auth.service';
 import { RegisterDto } from '../dto/register.dto';
 import { UpdateDto } from '../dto/update.dto';
 import { LoginDto } from '../dto/login.dto';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class UserService {
@@ -34,20 +38,25 @@ export class UserService {
     const hashedPassword = await this.authService.hashPassword(user.password);
     const savedUser = await this.userRepository.save({
       ...user,
+      role: UserRole.USER,
       password: hashedPassword,
     });
     delete savedUser.password;
     return savedUser;
   }
 
-  async findaAll(): Promise<User[]> {
-    const users = await this.userRepository.find();
-    const usersArr = [];
-    users.forEach((user) => {
-      delete user.password;
-      usersArr.push(user);
-    });
-    return usersArr;
+  // async findAll(): Promise<User[]> {
+  //   const users = await this.userRepository.find();
+  //   const usersArr = [];
+  //   users.forEach((user) => {
+  //     delete user.password;
+  //     usersArr.push(user);
+  //   });
+  //   return usersArr;
+  // }
+
+  async paginate(options: IPaginationOptions): Promise<Pagination<UserEntity>> {
+    return paginate<UserEntity>(this.userRepository, options);
   }
 
   async findOne(id: number): Promise<User> {

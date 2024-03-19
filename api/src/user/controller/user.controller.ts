@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
@@ -17,6 +18,8 @@ import { LoginDto } from '../dto/login.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
+import { UserEntity } from '../models/user.entity';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('user')
 export class UserController {
@@ -37,11 +40,17 @@ export class UserController {
     return this.userService.findOne(params.id);
   }
 
-  @hasRoles(UserRole.ADMIN)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get()
-  findAll(): Promise<User[]> {
-    return this.userService.findaAll();
+  @Get('')
+  async index(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 1,
+  ): Promise<Pagination<UserEntity>> {
+    limit = limit > 100 ? 100 : limit;
+    return this.userService.paginate({
+      page,
+      limit,
+      route: 'http//localhost:3000/user',
+    });
   }
 
   @hasRoles(UserRole.ADMIN)
