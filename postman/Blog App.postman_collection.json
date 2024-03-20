@@ -41,6 +41,28 @@
 							"port": "3000",
 							"path": [
 								"user"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "h",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -183,6 +205,25 @@
 								"user",
 								"role",
 								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/user/test",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"test"
 							]
 						}
 					},
