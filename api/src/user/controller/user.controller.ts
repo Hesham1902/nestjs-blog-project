@@ -10,6 +10,8 @@ import {
   Put,
   Query,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User, UserRole } from '../models/user.interface';
@@ -18,8 +20,6 @@ import { LoginDto } from '../dto/login.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
-import { UserEntity } from '../models/user.entity';
-import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('user')
 export class UserController {
@@ -40,17 +40,22 @@ export class UserController {
     return this.userService.findOne(params.id);
   }
 
-  @Get('')
-  async index(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 1,
-  ): Promise<Pagination<UserEntity>> {
+  @Get()
+  findAll(@Query() query: any) {
+    // eslint-disable-next-line prefer-const
+    let { page = 1, limit = 10, username, ...rest } = query;
     limit = limit > 100 ? 100 : limit;
-    return this.userService.paginate({
-      page,
-      limit,
-      route: 'http//localhost:3000/user',
-    });
+    const options = { page: +page, limit: +limit };
+
+    if (username || Object.keys(rest).length > 0) {
+      return this.userService.paginateFilter(options, { username, ...rest });
+    } else {
+      return this.userService.paginate({
+        page: options.page,
+        limit: options.limit,
+        route: 'http://localhost:3000/user',
+      });
+    }
   }
 
   @hasRoles(UserRole.ADMIN)

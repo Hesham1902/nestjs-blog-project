@@ -13,9 +13,9 @@ import { RegisterDto } from '../dto/register.dto';
 import { UpdateDto } from '../dto/update.dto';
 import { LoginDto } from '../dto/login.dto';
 import {
+  IPaginationOptions,
   paginate,
   Pagination,
-  IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 
 @Injectable()
@@ -45,18 +45,56 @@ export class UserService {
     return savedUser;
   }
 
-  // async findAll(): Promise<User[]> {
-  //   const users = await this.userRepository.find();
-  //   const usersArr = [];
-  //   users.forEach((user) => {
-  //     delete user.password;
-  //     usersArr.push(user);
-  //   });
-  //   return usersArr;
-  // }
+  async findAll() {
+    return this.userRepository.find();
+  }
 
   async paginate(options: IPaginationOptions): Promise<Pagination<UserEntity>> {
     return paginate<UserEntity>(this.userRepository, options);
+  }
+
+  async paginateFilter(
+    options: IPaginationOptions,
+    filters: any,
+  ): Promise<Pagination<User>> {
+    const { page, limit } = options;
+
+    // Create a base query
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.username',
+        'user.email',
+        'user.role',
+      ])
+      .orderBy('user.id', 'ASC');
+
+    // Apply filtering based on username
+    if (filters.username) {
+      queryBuilder.where('user.username LIKE :username', {
+        username: `%${filters.username}%`,
+      });
+    }
+
+    // Apply additional filters dynamically
+    if (filters && Object.keys(filters).length > 0) {
+      // Loop through the remaining filters and apply them dynamically
+      Object.entries(filters).forEach(([key, value]) => {
+        // Exclude 'username' filter as it's handled separately
+        if (key !== 'username') {
+          queryBuilder.andWhere(`user.${key} LIKE :${key}`, {
+            [key]: `%${value}%`,
+          });
+        }
+      });
+    }
+
+    // Paginate the query
+    const results = await paginate<User>(queryBuilder, { page, limit });
+
+    return results;
   }
 
   async findOne(id: number): Promise<User> {
