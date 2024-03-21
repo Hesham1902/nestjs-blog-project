@@ -9,7 +9,11 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
+  Res,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User, UserRole } from '../models/user.interface';
@@ -18,6 +22,24 @@ import { LoginDto } from '../dto/login.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
+import { v4 as uuidv4 } from 'uuid';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { ExtractUser } from '../decorators/get-user.decorator';
+import { join } from 'path';
+import { UpdateProfileImgDto } from '../dto/uploadImg.dto';
+
+export const storage = {
+  storage: diskStorage({
+    destination: './uploads/profileImgs',
+    filename: function (req, file, cb) {
+      // console.log(file);
+      const uniqueName = uuidv4() + '-' + file.originalname.replace(/\s/g, '');
+      console.log(uniqueName);
+      cb(null, uniqueName);
+    },
+  }),
+};
 
 @Controller('user')
 export class UserController {
@@ -68,6 +90,23 @@ export class UserController {
   @Delete(':id')
   deleteOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.deleteOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file', storage))
+  @Post('upload')
+  uploadFile(@UploadedFile() file, @ExtractUser() user: User): Promise<object> {
+    console.log(file);
+    if (!file) {
+      throw new BadRequestException('Invalid file object');
+    }
+    return this.userService.updateOne(user.id, { profileImg: file.filename });
+  }
+
+  @Get('profile-img/:imagename')
+  findProfileImg(@Param('imagename') imgName: string, @Res() res) {
+    console.log(imgName, process.cwd());
+    return res.sendFile(join(process.cwd(), `uploads/profileImgs/${imgName}`));
   }
 
   @Put(':id')
