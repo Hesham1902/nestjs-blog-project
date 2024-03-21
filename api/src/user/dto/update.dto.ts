@@ -6,6 +6,8 @@ export class UpdateDto {
   name?: string;
 
   @IsString()
-  @IsNotEmpty()
   username?: string;
+
+  @IsString()
+  profileImg?: string;
 }
