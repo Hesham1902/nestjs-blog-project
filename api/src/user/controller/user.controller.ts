@@ -41,12 +41,12 @@ export class UserController {
   @Get()
   findAll(@Query() query: any) {
     // eslint-disable-next-line prefer-const
-    let { page = 1, limit = 10, username, ...rest } = query;
+    let { page = 1, limit = 10, ...rest } = query;
     limit = limit > 100 ? 100 : limit;
     const options = { page: +page, limit: +limit };
 
-    if (username || Object.keys(rest).length > 0) {
-      return this.userService.paginateFilter(options, { username, ...rest });
+    if (Object.keys(rest).length > 0) {
+      return this.userService.paginateFilter(options, { ...rest });
     } else {
       return this.userService.paginate({
         page: options.page,

@@ -71,23 +71,17 @@ export class UserService {
       ])
       .orderBy('user.id', 'ASC');
 
-    // Apply filtering based on username
-    if (filters.username) {
-      queryBuilder.where('user.username LIKE :username', {
-        username: `%${filters.username}%`,
-      });
-    }
-
     // Apply additional filters dynamically
     if (filters && Object.keys(filters).length > 0) {
+      console.log('filters Object:', filters);
+      console.log('Object keys:', Object.keys(filters));
+      console.log('Object entries:', Object.entries(filters));
       // Loop through the remaining filters and apply them dynamically
       Object.entries(filters).forEach(([key, value]) => {
-        // Exclude 'username' filter as it's handled separately
-        if (key !== 'username') {
-          queryBuilder.andWhere(`user.${key} LIKE :${key}`, {
-            [key]: `%${value}%`,
-          });
-        }
+        console.log([key], value);
+        queryBuilder.andWhere(`user.${key} LIKE :${key}`, {
+          [key]: `%${value}%`,
+        });
       });
     }
 
