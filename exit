@@ -1,0 +1,65 @@
+[33mcommit 2b1f99ba78f93d0c66a0daf6bd88a7d2be372575[m[33m ([m[1;36mHEAD -> [m[1;32mfeature/task-07[m[33m)[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Thu Mar 21 18:35:49 2024 +0200
+
+    Task-06: profile image upload with multer
+
+[33mcommit 47bee093f37cd8a4d10bc9bd11d6a6701b8ef00e[m[33m ([m[1;31morigin2/develop[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Thu Mar 21 16:39:40 2024 +0200
+
+    Task-06 Pagination, filtering user entity from database added
+
+[33mcommit 44455ca7318776b6c3e55aaea7a19c9973fd4cc1[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Wed Mar 20 02:15:43 2024 +0200
+
+    Task-06 Pagination, filtering user entity from database added
+
+[33mcommit 512097f68026d236410da7cd5a3b5a6b6c85079d[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Wed Mar 20 02:14:09 2024 +0200
+
+    Task-06 Pagination, filtering user entity from database added
+
+[33mcommit da4daa9e44fd6de5af982e19b6fc6b9b08e2822a[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Wed Mar 20 02:09:39 2024 +0200
+
+    Pagination, filtering user entity from database added
+
+[33mcommit 88372ce86a06929ea6b419acf0e0e6f2dcbbb1fe[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Tue Mar 19 16:14:46 2024 +0200
+
+    task-05 Added paginate endpoint, creating new user can't insert his role it's user as default
+
+[33mcommit 82dbf9e9aec50e95ae9db366a32faae4af2a57f7[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Tue Mar 19 02:16:42 2024 +0200
+
+    Task-04: Implemented authguards, custom hasRole decorator
+
+[33mcommit 1c1a32b0925e2ae296f395bd421014726a12cc25[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Mon Mar 18 01:13:07 2024 +0200
+
+    Task-03 added auth module, added login endpoint and jwt
+
+[33mcommit 82ace1d0653ade27b6c86a32c954fe85df20ba26[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Sat Mar 16 01:30:13 2024 +0200
+
+    CRUD added for userEntity, postman docs added
+
+[33mcommit 9e4442724ace9dd0f919ea225cd11292355ed1a5[m[33m ([m[1;31morigin2/main[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Hesham1902 <heshammaher@outlook.com>
+Date:   Sat Mar 16 01:27:22 2024 +0200
+
+    first commit
+
+[33mcommit b5790369bd28e7a63b88c42516b1b4b041b33ad3[m
+Author: Hesham maher <heshammaher@outlook.com>
+Date:   Fri Mar 15 23:19:24 2024 +0000
+
+    Initial commit
