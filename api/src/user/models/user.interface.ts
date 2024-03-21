@@ -5,7 +5,6 @@ export interface User {
   email?: string;
   password?: string;
   role?: UserRole;
-  profileImg?: string;
 }
 
 export enum UserRole {

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../models/user.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User, UserRole } from '../models/user.interface';
 import { AuthService } from 'src/auth/service/auth.service';
 import { RegisterDto } from '../dto/register.dto';
@@ -104,15 +104,8 @@ export class UserService {
     return this.userRepository.delete(id);
   }
 
-  async updateOne(id: number, user: UpdateDto) {
-    const updateResult: UpdateResult = await this.userRepository.update(
-      id,
-      user,
-    );
-    if (updateResult.affected && updateResult.affected > 0) {
-      return this.userRepository.findOne({ where: { id } });
-    }
-    throw new NotFoundException(`Couldn\'t update the user`);
+  updateOne(id: number, user: UpdateDto): Promise<any> {
+    return this.userRepository.update(id, user);
   }
 
   async login(body: LoginDto): Promise<object> {
