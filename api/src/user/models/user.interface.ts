@@ -1,3 +1,5 @@
+import { Blog } from 'src/blog/models/blog.interface';
+
 export interface User {
   id?: number;
   name?: string;
@@ -5,6 +7,7 @@ export interface User {
   email?: string;
   password?: string;
   role?: UserRole;
+  blogs?: Blog[];
   profileImg?: string;
 }
 
