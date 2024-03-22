@@ -12,19 +12,61 @@ import { AuthService } from 'src/auth/service/auth.service';
 import { RegisterDto } from '../dto/register.dto';
 import { UpdateDto } from '../dto/update.dto';
 import { LoginDto } from '../dto/login.dto';
+import { v4 as uuidv4 } from 'uuid';
 import {
   IPaginationOptions,
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
+  private readonly bucket;
+  private readonly s3Client = new S3Client({
+    region: this.configService.getOrThrow('AWS_S3_REGION'),
+  });
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private configService: ConfigService,
     private authService: AuthService,
-  ) {}
+  ) {
+    this.bucket = this.configService.getOrThrow('AWS_S3_BUCKET');
+  }
+
+  async UploadToS3(file: Express.Multer.File, id) {
+    console.log(file);
+    // const bucket = this.configService.getOrThrow('AWS_S3_BUCKET');
+    const key = `${uuidv4()}-${file.originalname}`;
+    const command = new PutObjectCommand({
+      Bucket: this.bucket,
+      Key: key,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+      ACL: 'public-read', // Optionally, specify the ACL (access control list)
+    });
+    try {
+      const updatedResult = await this.updateOne(id, {
+        profileImg: key,
+      });
+
+      if (!updatedResult) {
+        throw new BadRequestException('Could not update the profile image');
+      }
+      await this.s3Client.send(command);
+      const imageUrl = `https://${this.bucket}.s3.amazonaws.com/${key}`;
+      return { imageUrl, result: 'Image uploaded and saved succesfully' };
+    } catch (err) {
+      console.error('Error uploading file to S3:', err);
+      return err;
+    }
+  }
 
   async create(user: RegisterDto): Promise<RegisterDto> {
     if (

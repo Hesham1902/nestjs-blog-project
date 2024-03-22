@@ -99,11 +99,14 @@
 				{
 					"name": "Update new user",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Hesham Maher\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Hussien\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -111,14 +114,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/user/1",
+							"raw": "localhost:3000/user/6",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"user",
-								"1"
+								"6"
 							]
 						}
 					},
@@ -224,6 +227,88 @@
 							"path": [
 								"user",
 								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload profile Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJuYW1lIjoidXNlciB1c2VyIiwidXNlcm5hbWUiOiJ1c2VyMyIsImVtYWlsIjoiaGhoQHRlc3QuY29tIiwicm9sZSI6InVzZXIiLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExMTQwOTk5LCJleHAiOjE3MTExNTA5OTl9.9C8vEMiUaIFl742-YsYPpmrXdsEZ1kJv_hC7eT-i_Eo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/pireb/Pictures/duck.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/upload",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download profile Image",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJuYW1lIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJlbWFpbCI6ImhoQHRlc3QuY29tIiwicm9sZSI6InVzZXIiLCJwcm9maWxlSW1nIjoiMThjZmUwNzItYzhiNi00ZGJkLWI0NTctNzdkNWUyYWFkZDY1LXRlc3R3aXRoc3BhY2UucG5nIn0sImlhdCI6MTcxMTAzNjE5MSwiZXhwIjoxNzExMDQ2MTkxfQ.docRG2aO4i53z_-GUUj1HY_o1YhKDQMt3xFm4Zg2bFI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/pireb/Pictures/test with space.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/profile-img/b5edace4-3d02-429d-b216-799052a2833c-duck.png",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"profile-img",
+								"b5edace4-3d02-429d-b216-799052a2833c-duck.png"
 							]
 						}
 					},

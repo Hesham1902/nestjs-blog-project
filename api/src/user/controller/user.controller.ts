@@ -14,6 +14,9 @@ import {
   UseInterceptors,
   Res,
   BadRequestException,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 import { User, UserRole } from '../models/user.interface';
@@ -22,24 +25,23 @@ import { LoginDto } from '../dto/login.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
-import { v4 as uuidv4 } from 'uuid';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { ExtractUser } from '../decorators/get-user.decorator';
-import { join } from 'path';
-import { UpdateProfileImgDto } from '../dto/uploadImg.dto';
+import { UserValidateGuard } from 'src/auth/guards/user-vaidate.guard';
+// import { v4 as uuidv4 } from 'uuid';
+// import { diskStorage } from 'multer';
 
-export const storage = {
-  storage: diskStorage({
-    destination: './uploads/profileImgs',
-    filename: function (req, file, cb) {
-      // console.log(file);
-      const uniqueName = uuidv4() + '-' + file.originalname.replace(/\s/g, '');
-      console.log(uniqueName);
-      cb(null, uniqueName);
-    },
-  }),
-};
+// export const storage = {
+//   storage: diskStorage({
+//     destination: './uploads/profileImgs',
+//     filename: function (req, file, cb) {
+//       // console.log(file);
+//       const uniqueName = uuidv4() + '-' + file.originalname.replace(/\s/g, '');
+//       console.log(uniqueName);
+//       cb(null, uniqueName);
+//     },
+//   }),
+// };
 
 @Controller('user')
 export class UserController {
@@ -87,28 +89,35 @@ export class UserController {
   ): Promise<any> {
     return this.userService.updateRoleOfUser(role, id);
   }
+
   @Delete(':id')
   deleteOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.deleteOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('file', storage))
-  @Post('upload')
-  uploadFile(@UploadedFile() file, @ExtractUser() user: User): Promise<object> {
-    console.log(file);
+  @UseInterceptors(FileInterceptor('file'))
+  @Patch('upload')
+  uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5000000 }),
+          new FileTypeValidator({ fileType: 'png|jpeg|jpg' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+    @ExtractUser() user: User,
+  ) {
     if (!file) {
       throw new BadRequestException('Invalid file object');
     }
-    return this.userService.updateOne(user.id, { profileImg: file.filename });
+    // return this.userService.updateOne(user.id, { profileImg: file.filename });
+    return this.userService.UploadToS3(file, user.id);
   }
 
-  @Get('profile-img/:imagename')
-  findProfileImg(@Param('imagename') imgName: string, @Res() res) {
-    console.log(imgName, process.cwd());
-    return res.sendFile(join(process.cwd(), `uploads/profileImgs/${imgName}`));
-  }
-
+  @UseGuards(JwtAuthGuard, UserValidateGuard)
   @Put(':id')
   updateOne(
     @Param('id', ParseIntPipe) id: number,
