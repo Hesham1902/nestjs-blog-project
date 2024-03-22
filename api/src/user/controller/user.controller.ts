@@ -27,7 +27,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ExtractUser } from '../decorators/get-user.decorator';
-import { join } from 'path';
+import { UserValidateGuard } from 'src/auth/guards/user-vaidate.guard';
 // import { v4 as uuidv4 } from 'uuid';
 // import { diskStorage } from 'multer';
 
@@ -89,6 +89,7 @@ export class UserController {
   ): Promise<any> {
     return this.userService.updateRoleOfUser(role, id);
   }
+
   @Delete(':id')
   deleteOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.deleteOne(id);
@@ -96,7 +97,7 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
-  @Post('upload')
+  @Patch('upload')
   uploadFile(
     @UploadedFile(
       new ParseFilePipe({
@@ -116,6 +117,7 @@ export class UserController {
     return this.userService.UploadToS3(file, user.id);
   }
 
+  @UseGuards(JwtAuthGuard, UserValidateGuard)
   @Put(':id')
   updateOne(
     @Param('id', ParseIntPipe) id: number,
