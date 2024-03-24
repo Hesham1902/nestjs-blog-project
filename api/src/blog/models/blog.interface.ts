@@ -6,8 +6,8 @@ export interface Blog {
   slug?: string;
   description?: string;
   body?: string;
-  createAt?: Date;
-  updateAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   likes?: number;
   author?: User;
   headerImage?: string;

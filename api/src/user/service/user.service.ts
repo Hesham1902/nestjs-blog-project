@@ -18,12 +18,9 @@ import {
   paginate,
   Pagination,
 } from 'nestjs-typeorm-paginate';
-import {
-  GetObjectCommand,
-  PutObjectCommand,
-  S3Client,
-} from '@aws-sdk/client-s3';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
+import { ApiFeatures } from 'src/utils/api.features';
 
 @Injectable()
 export class UserService {
@@ -95,42 +92,57 @@ export class UserService {
     return paginate<UserEntity>(this.userRepository, options);
   }
 
-  async paginateFilter(
-    options: IPaginationOptions,
-    filters: any,
-  ): Promise<Pagination<User>> {
-    const { page, limit } = options;
+  // async paginateFilter(
+  //   options: IPaginationOptions,
+  //   filters: any,
+  // ): Promise<Pagination<User>> {
+  //   const { page, limit } = options;
 
-    // Create a base query
-    const queryBuilder = this.userRepository
-      .createQueryBuilder('user')
-      .select([
-        'user.id',
-        'user.name',
-        'user.username',
-        'user.email',
-        'user.role',
-      ])
-      .orderBy('user.id', 'ASC');
+  //   // Create a base query
+  //   const queryBuilder = this.userRepository
+  //     .createQueryBuilder('user')
+  //     .select([
+  //       'user.id',
+  //       'user.name',
+  //       'user.username',
+  //       'user.email',
+  //       'user.role',
+  //     ])
+  //     .orderBy('user.id', 'ASC');
 
-    // Apply additional filters dynamically
-    if (filters && Object.keys(filters).length > 0) {
-      console.log('filters Object:', filters);
-      console.log('Object keys:', Object.keys(filters));
-      console.log('Object entries:', Object.entries(filters));
-      // Loop through the remaining filters and apply them dynamically
-      Object.entries(filters).forEach(([key, value]) => {
-        console.log([key], value);
-        queryBuilder.andWhere(`user.${key} LIKE :${key}`, {
-          [key]: `%${value}%`,
-        });
-      });
-    }
+  //   // Apply additional filters dynamically
+  //   if (filters && Object.keys(filters).length > 0) {
+  //     console.log('filters Object:', filters);
+  //     console.log('Object keys:', Object.keys(filters));
+  //     console.log('Object entries:', Object.entries(filters));
+  //     // Loop through the remaining filters and apply them dynamically
+  //     Object.entries(filters).forEach(([key, value]) => {
+  //       console.log([key], value);
+  //       queryBuilder.andWhere(`user.${key} LIKE :${key}`, {
+  //         [key]: `%${value}%`,
+  //       });
+  //     });
+  //   }
 
-    // Paginate the query
-    const results = await paginate<User>(queryBuilder, { page, limit });
+  //   // Paginate the query
+  //   const results = await paginate<User>(queryBuilder, { page, limit });
 
-    return results;
+  //   return results;
+  // }
+
+  // Using ApiFeatures
+  async paginateFilter(queryObj) {
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    const { page, limit, ...filters } = queryObj;
+    console.log(queryObj, filters);
+    // if (!(Object.entries(filters).length > 0)) {
+    //   queryBuilder =
+    // }
+    const apiFeatures = await new ApiFeatures<User>(queryBuilder, queryObj)
+      .filter(filters)
+      .pagination();
+    const users = await apiFeatures.query.getMany();
+    return { users, paginationResult: apiFeatures.paginationObj };
   }
 
   async findOne(id: number): Promise<User> {
@@ -166,10 +178,6 @@ export class UserService {
     return this.authService.generateJwtToken(user);
   }
 
-  updateRoleOfUser(role: UserRole, id: string): Promise<any> {
-    return this.userRepository.update(id, { role });
-  }
-
   async validateUser(email: string, password: string) {
     const user = await this.userRepository.findOne({
       where: { email },
@@ -179,5 +187,9 @@ export class UserService {
       result: this.authService.comparePasswords(password, user.password),
       user,
     };
+  }
+
+  updateRoleOfUser(role: UserRole, id: string): Promise<any> {
+    return this.userRepository.update(id, { role });
   }
 }

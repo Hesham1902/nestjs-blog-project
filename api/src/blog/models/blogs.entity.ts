@@ -3,6 +3,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -13,7 +14,7 @@ export class BlogEntity {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   slug: string;
@@ -33,13 +34,13 @@ export class BlogEntity {
   @Column({ default: 0 })
   likes: number;
 
-  @Column()
+  @Column({ nullable: true })
   headerImage: string;
 
-  @Column()
+  @Column({ nullable: true })
   publishDate: Date;
 
-  @Column()
+  @Column({ default: true })
   isPublished: boolean;
 
   @ManyToOne(() => UserEntity, (user) => user.blogs)
