@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BlogEntity } from '../models/blogs.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateBlogDto } from '../dto';
 import { User } from 'src/user/models/user.interface';
 import slugify from 'slugify';
 import { Blog } from '../models/blog.interface';
 import { ApiFeatures } from 'src/utils/api.features';
+import { UpdateBlogDto } from '../dto/update-blog.dto';
 
 @Injectable()
 export class BlogService {
@@ -53,5 +54,15 @@ export class BlogService {
       where: { id },
       relations: ['author'],
     });
+  }
+
+  async updateOne(id: number, updateBlogDto: UpdateBlogDto) {
+    const blog = await this.blogRepository.findOne({ where: { id } });
+    Object.assign(blog, updateBlogDto);
+    return this.blogRepository.save(blog);
+  }
+
+  deleteOne(id: number): Promise<DeleteResult> {
+    return this.blogRepository.delete(id);
   }
 }

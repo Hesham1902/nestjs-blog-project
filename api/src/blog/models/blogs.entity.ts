@@ -1,9 +1,10 @@
+import slugify from 'slugify';
 import { UserEntity } from 'src/user/models/user.entity';
 import {
+  AfterUpdate,
   BeforeUpdate,
   Column,
   Entity,
-  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -43,14 +44,15 @@ export class BlogEntity {
   @Column({ default: true })
   isPublished: boolean;
 
-  @ManyToOne(() => UserEntity, (user) => user.blogs)
+  @ManyToOne(() => UserEntity, (user) => user.blogs, { onDelete: 'CASCADE' })
   author: UserEntity;
 
   //   @ManyToOne(() => UserEntity, (user) => user.blogs)
   //   user: UserEntity;
 
   @BeforeUpdate()
-  updateTimeStamp() {
+  updateTimeStampAndSlugs() {
+    this.slug = slugify(this.title);
     this.updatedAt = new Date();
   }
 }

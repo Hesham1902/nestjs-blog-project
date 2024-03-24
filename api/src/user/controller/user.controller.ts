@@ -26,7 +26,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ExtractUser } from '../decorators/get-user.decorator';
-import { UserValidateGuard } from 'src/auth/guards/user-vaidate.guard';
+import { UserValidateGuard } from 'src/user/guards/user-vaidate.guard';
 // import { v4 as uuidv4 } from 'uuid';
 // import { diskStorage } from 'multer';
 
@@ -89,7 +89,8 @@ export class UserController {
     return this.userService.updateRoleOfUser(role, id);
   }
 
-  @UseGuards(JwtAuthGuard, UserValidateGuard)
+  @hasRoles('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   deleteOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.deleteOne(id);

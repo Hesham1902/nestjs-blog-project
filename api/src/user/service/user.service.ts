@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../models/user.entity';
-import { Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { User, UserRole } from '../models/user.interface';
 import { AuthService } from 'src/auth/service/auth.service';
 import { RegisterDto } from '../dto/register.dto';
@@ -154,8 +154,26 @@ export class UserService {
     return result;
   }
 
-  deleteOne(id: number): Promise<any> {
-    return this.userRepository.delete(id);
+  async deleteOne(id: number): Promise<any> {
+    try {
+      const result: DeleteResult = await this.userRepository.delete(id);
+      console.log(result);
+      if (result.affected !== 1 || !result.affected) {
+        throw new Error('Could not delete the user from the database');
+      }
+      return {
+        success: true,
+        message: 'User deleted successfully',
+        result: result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'An error occurred while deleting the user',
+        error,
+        status: error.statusCode,
+      };
+    }
   }
 
   async updateOne(id: number, user: UpdateDto) {
