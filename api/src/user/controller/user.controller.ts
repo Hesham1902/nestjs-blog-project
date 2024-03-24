@@ -12,7 +12,6 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-  Res,
   BadRequestException,
   MaxFileSizeValidator,
   ParseFilePipe,
@@ -27,7 +26,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ExtractUser } from '../decorators/get-user.decorator';
-import { UserValidateGuard } from 'src/auth/guards/user-vaidate.guard';
+import { UserValidateGuard } from 'src/user/guards/user-vaidate.guard';
 // import { v4 as uuidv4 } from 'uuid';
 // import { diskStorage } from 'multer';
 
@@ -63,21 +62,21 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() query: any) {
+  findAll(@Query() queryObj: any) {
     // eslint-disable-next-line prefer-const
-    let { page = 1, limit = 10, ...rest } = query;
-    limit = limit > 100 ? 100 : limit;
-    const options = { page: +page, limit: +limit };
-
-    if (Object.keys(rest).length > 0) {
-      return this.userService.paginateFilter(options, { ...rest });
-    } else {
-      return this.userService.paginate({
-        page: options.page,
-        limit: options.limit,
-        route: 'http://localhost:3000/user',
-      });
-    }
+    // let { page = 1, limit = 10, ...rest } = queryObj;
+    // limit = limit > 100 ? 100 : limit;
+    // const queryObj = { page: +page, limit: +limit };
+    // if (Object.keys(rest).length > 0) {
+    return this.userService.paginateFilter(queryObj);
+    // }
+    // else {
+    //   return this.userService.paginate({
+    //     page,
+    //     limit,
+    //     route: 'http://localhost:3000/user',
+    //   });
+    // }
   }
 
   @hasRoles(UserRole.ADMIN)
@@ -90,6 +89,8 @@ export class UserController {
     return this.userService.updateRoleOfUser(role, id);
   }
 
+  @hasRoles('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   deleteOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.userService.deleteOne(id);

@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/user",
+							"raw": "localhost:3000/user?name=Hussien",
 							"host": [
 								"localhost"
 							],
@@ -54,12 +54,11 @@
 									"disabled": true
 								},
 								{
-									"key": "username",
-									"value": "user",
-									"disabled": true
+									"key": "name",
+									"value": "Hussien"
 								},
 								{
-									"key": "name",
+									"key": "username",
 									"value": "h",
 									"disabled": true
 								}
@@ -75,7 +74,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Admin\",\r\n    \"username\": \"Admin\",\r\n    \"email\": \"ad@admin.com\",\r\n    \"password\": \"1234\",\r\n    \"role\": \"admin\"\r\n}",
+							"raw": "{\r\n    \"name\":\"hussien\",\r\n    \"username\": \"hussien09\",\r\n    \"email\": \"h@h.com\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,7 +152,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"hh@test.com\",\r\n    \"password\": \"123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"ad@admin.com\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -309,6 +308,191 @@
 								"user",
 								"profile-img",
 								"b5edace4-3d02-429d-b216-799052a2833c-duck.png"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blogs",
+			"item": [
+				{
+					"name": "Create New blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTExNzI4MjgsImV4cCI6MTcxMTE4MjgyOH0.TZ3qZLfWhe2xlK064ayaUXyl3aE0UC74EpkanZl5_uo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \" blog !\",\r\n    \"body\": \"content test\",\r\n    \"description\": \"description of the blog\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/blogs",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Blogs (you can specify blogs of a user)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTEyMTI5MDgsImV4cCI6MTcxMTIyMjkwOH0.ufVDXzLZet00TW0fW7TgTokah2YIq43BxT8UHoOTC_E",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/blogs?page=3&limit=1&title=First",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "3"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "likes[gte]",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "First"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/blogs?userId=3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTEzMTY2NjMsImV4cCI6MTcxMTMyNjY2M30.95j4WYoI_8Iozr-dBM_ndwHuH1gF8cp3J7gvO4SjmLo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Updated slug\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/blogs/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete blog by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTEzMTg1NzgsImV4cCI6MTcxMTMyODU3OH0.6L-u-kro3EPFOYkhbvHR0q3dp7SeBgEBEYRMvPisxXc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/blogs/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blogs",
+								"4"
 							]
 						}
 					},

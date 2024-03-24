@@ -1,5 +1,7 @@
+import slugify from 'slugify';
 import { UserEntity } from 'src/user/models/user.entity';
 import {
+  AfterUpdate,
   BeforeUpdate,
   Column,
   Entity,
@@ -13,7 +15,7 @@ export class BlogEntity {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   slug: string;
@@ -33,23 +35,24 @@ export class BlogEntity {
   @Column({ default: 0 })
   likes: number;
 
-  @Column()
+  @Column({ nullable: true })
   headerImage: string;
 
-  @Column()
+  @Column({ nullable: true })
   publishDate: Date;
 
-  @Column()
+  @Column({ default: true })
   isPublished: boolean;
 
-  @ManyToOne(() => UserEntity, (user) => user.blogs)
+  @ManyToOne(() => UserEntity, (user) => user.blogs, { onDelete: 'CASCADE' })
   author: UserEntity;
 
   //   @ManyToOne(() => UserEntity, (user) => user.blogs)
   //   user: UserEntity;
 
   @BeforeUpdate()
-  updateTimeStamp() {
+  updateTimeStampAndSlugs() {
+    this.slug = slugify(this.title);
     this.updatedAt = new Date();
   }
 }
