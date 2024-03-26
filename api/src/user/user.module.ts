@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './service/user.service';
+import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './models/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
-import { UserController } from './controller/user.controller';
+import { UserController } from './user.controller';
+import { RetrievalService } from './retrieval/retrieval.service';
+import { RetrievalController } from './retrieval/retrieval.controller';
+import { UploadController } from './upload/upload.controller';
+import { UploadService } from './upload/upload.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity]), AuthModule],
-  controllers: [UserController],
-  providers: [UserService],
-  exports: [UserService],
+  controllers: [UserController, RetrievalController, UploadController],
+  providers: [UserService, RetrievalService, UploadService],
+  exports: [UserService, RetrievalService],
 })
 export class UserModule {}

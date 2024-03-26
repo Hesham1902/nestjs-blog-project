@@ -9,14 +9,14 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { BlogService } from '../service/blog.service';
+import { BlogService } from './blog.service';
 import { ExtractUser } from 'src/user/decorators/get-user.decorator';
 import { User } from 'src/user/models/user.interface';
-import { CreateBlogDto } from '../dto';
+import { CreateBlogDto } from './dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Blog } from '../models/blog.interface';
-import { UpdateBlogDto } from '../dto/update-blog.dto';
-import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
+import { Blog } from './models/blog.interface';
+import { UpdateBlogDto } from './dto/update-blog.dto';
+import { UserIsAuthorGuard } from './guards/user-is-author.guard';
 import { DeleteResult } from 'typeorm';
 
 @UseGuards(JwtAuthGuard)
@@ -32,29 +32,18 @@ export class BlogController {
     return this.blogService.create(user, body);
   }
 
+  //Corrupted One
   @Get()
   findAllBlogs(@Query() queryObj) {
-    const { page, limit, userId, orderByColumn, orderByDirection, ...filters } =
-      queryObj;
-    if (!userId) {
-      return this.blogService.findAllBlogs(
-        queryObj,
-        orderByColumn,
-        orderByDirection,
-        filters,
-      );
+    if (!queryObj.userId) {
+      return this.blogService.findAllBlogs(queryObj);
     }
-    return this.blogService.findAllBlogs(
-      queryObj,
-      orderByColumn,
-      orderByDirection,
-      filters,
-      userId,
-    );
+    return this.blogService.findAllBlogs(queryObj);
   }
 
   @Get(':id')
   findBlogById(@Param('id') id: number): Promise<Blog> {
+    console.log(id);
     return this.blogService.findOne(id);
   }
 

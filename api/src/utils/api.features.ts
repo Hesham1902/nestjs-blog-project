@@ -26,14 +26,15 @@ export class ApiFeatures<T> {
   ) {}
 
   filter(filters: Record<string, any>): this {
+    // console.log(filters);
     if (
       filters &&
       Object.keys(filters).length > 0 &&
       Object.entries(filters) !== undefined &&
       Object.values(filters)[0] !== undefined
     ) {
-      console.log('Keys: ' + Object.keys(filters));
-      console.log('entries: ' + Object.entries(filters));
+      // console.log('Keys: ' + Object.keys(filters));
+      // console.log('entries: ' + Object.entries(filters));
       Object.entries(filters).forEach(([key, value]) => {
         this.query = this.query.andWhere(
           `${this.query.alias}.${key} LIKE :${key} `,
