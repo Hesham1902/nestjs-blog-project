@@ -19,7 +19,7 @@ export class UserIsAuthorGuard implements CanActivate {
     const loggedUser: User = request.user;
     const user = await this.retrievalService.findById(loggedUser.id);
     if (!user) {
-      throw new NotFoundException('No user found with this id');
+      throw new NotFoundException('You must be logged in');
     }
     const blogId = Number(request.params.id);
     const blog = await this.blogService.findOne(blogId);

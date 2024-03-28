@@ -7,7 +7,9 @@ import {
   Post,
   Put,
   Query,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { ExtractUser } from 'src/user/decorators/get-user.decorator';
@@ -18,18 +20,21 @@ import { Blog } from './models/blog.interface';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { UserIsAuthorGuard } from './guards/user-is-author.guard';
 import { DeleteResult } from 'typeorm';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(JwtAuthGuard)
 @Controller('blogs')
 export class BlogController {
   constructor(private blogService: BlogService) {}
 
+  @UseInterceptors(FileInterceptor('headerImage'))
   @Post()
   createBlog(
     @ExtractUser() user: User,
     @Body() body: CreateBlogDto,
-  ): Promise<Blog> {
-    return this.blogService.create(user, body);
+    @UploadedFile() headerImage: Express.Multer.File,
+  ) {
+    return this.blogService.create(user, body, headerImage);
   }
 
   //Corrupted One
@@ -43,7 +48,6 @@ export class BlogController {
 
   @Get(':id')
   findBlogById(@Param('id') id: number): Promise<Blog> {
-    console.log(id);
     return this.blogService.findOne(id);
   }
 

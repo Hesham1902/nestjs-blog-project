@@ -51,6 +51,7 @@ export class RetrievalService {
   }
 
   async findByEmail(email: string): Promise<User> {
+    console.log(email);
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       throw new NotFoundException(`No User with this ${email} found`);
