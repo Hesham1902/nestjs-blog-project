@@ -1,7 +1,6 @@
 import slugify from 'slugify';
 import { UserEntity } from 'src/user/models/user.entity';
 import {
-  AfterUpdate,
   BeforeUpdate,
   Column,
   Entity,

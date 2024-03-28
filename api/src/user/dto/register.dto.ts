@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { UserRole } from '../models/user.interface';
+import { UserRole } from '../../user/models/user.interface';
 
 export class RegisterDto {
   @IsString()

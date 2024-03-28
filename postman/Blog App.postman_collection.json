@@ -127,25 +127,6 @@
 					"response": []
 				},
 				{
-					"name": "Delete user by id",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/user/1",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"user",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "login",
 					"request": {
 						"method": "POST",
@@ -160,72 +141,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/user/login",
+							"raw": "localhost:3000/auth/login",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"user",
+								"auth",
 								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update role of user (admins only)",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4ifSwiaWF0IjoxNzEwODA2NTMyLCJleHAiOjE3MTA4MTY1MzJ9.Zg1JzQ_uFYYyBX65YMT7g_YHs3tN41jVl-Q8OBOTDt4",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"role\": \"admin\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:3000/user/role/2",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"user",
-								"role",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Filter by username",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/user/test",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"user",
-								"test"
 							]
 						}
 					},
@@ -239,7 +162,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJuYW1lIjoidXNlciB1c2VyIiwidXNlcm5hbWUiOiJ1c2VyMyIsImVtYWlsIjoiaGhoQHRlc3QuY29tIiwicm9sZSI6InVzZXIiLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExMTQwOTk5LCJleHAiOjE3MTExNTA5OTl9.9C8vEMiUaIFl742-YsYPpmrXdsEZ1kJv_hC7eT-i_Eo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo5LCJuYW1lIjoiYWhtZWQiLCJ1c2VybmFtZSI6ImFobWVkIiwiZW1haWwiOiJhaEBoLmNvbSIsInJvbGUiOiJ1c2VyIiwicHJvZmlsZUltZyI6bnVsbH0sImlhdCI6MTcxMTQyODM4NSwiZXhwIjoxNzExNDM4Mzg1fQ.Llcy_payPmPd2wG5Sa6qZmcVfq5FRqcIn-abGhKVMH4",
 									"type": "string"
 								}
 							]
@@ -252,18 +175,17 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/pireb/Pictures/duck.png"
+									"src": "/C:/Users/pireb/Pictures/book-image.png"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:3000/user/upload",
+							"raw": "localhost:3000/upload",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"user",
 								"upload"
 							]
 						}
@@ -271,43 +193,19 @@
 					"response": []
 				},
 				{
-					"name": "Download profile Image",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Get user by email",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJuYW1lIjoidXNlciIsInVzZXJuYW1lIjoidXNlcjEiLCJlbWFpbCI6ImhoQHRlc3QuY29tIiwicm9sZSI6InVzZXIiLCJwcm9maWxlSW1nIjoiMThjZmUwNzItYzhiNi00ZGJkLWI0NTctNzdkNWUyYWFkZDY1LXRlc3R3aXRoc3BhY2UucG5nIn0sImlhdCI6MTcxMTAzNjE5MSwiZXhwIjoxNzExMDQ2MTkxfQ.docRG2aO4i53z_-GUUj1HY_o1YhKDQMt3xFm4Zg2bFI",
-									"type": "string"
-								}
-							]
-						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "file",
-									"type": "file",
-									"src": "/C:/Users/pireb/Pictures/test with space.png"
-								}
-							]
-						},
 						"url": {
-							"raw": "localhost:3000/user/profile-img/b5edace4-3d02-429d-b216-799052a2833c-duck.png",
+							"raw": "localhost:3000/user/ah@test.com",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"user",
-								"profile-img",
-								"b5edace4-3d02-429d-b216-799052a2833c-duck.png"
+								"ah@test.com"
 							]
 						}
 					},
@@ -326,7 +224,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTExNzI4MjgsImV4cCI6MTcxMTE4MjgyOH0.TZ3qZLfWhe2xlK064ayaUXyl3aE0UC74EpkanZl5_uo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExNDM0MzU2LCJleHAiOjE3MTE0NDQzNTZ9.sSUrybttAZbAIfs_u_G3niIy6SZpn_dW6LKvHiVS-jQ",
 									"type": "string"
 								}
 							]
@@ -335,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \" blog !\",\r\n    \"body\": \"content test\",\r\n    \"description\": \"description of the blog\"\r\n}",
+							"raw": "{\r\n    \"title\": \" blog123 !\",\r\n    \"body\": \"content test\",\r\n    \"description\": \"description of the blog\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -410,22 +308,27 @@
 				{
 					"name": "Get Blog by id",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo5LCJuYW1lIjoiYWhtZWQiLCJ1c2VybmFtZSI6ImFobWVkIiwiZW1haWwiOiJhaEBoLmNvbSIsInJvbGUiOiJ1c2VyIiwicHJvZmlsZUltZyI6ImE3MjQ0YjFjLTA3Y2UtNGNkMy05NmRhLTZlMDMzZjhhMWUyYS1ib29rLWltYWdlLnBuZyJ9LCJpYXQiOjE3MTE0MzA3MTgsImV4cCI6MTcxMTQ0MDcxOH0.sIEhOCb6_hcvNvtligVID5J61RL87ngnr56PVTE1bqM",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/blogs?userId=3",
+							"raw": "localhost:3000/blogs/8",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"blogs"
-							],
-							"query": [
-								{
-									"key": "userId",
-									"value": "3"
-								}
+								"blogs",
+								"8"
 							]
 						}
 					},
@@ -485,14 +388,118 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/blogs/4",
+							"raw": "localhost:3000/blogs/8",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"blogs",
-								"4"
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Ban user by id (ADMIN)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExNDM0MDM2LCJleHAiOjE3MTE0NDQwMzZ9.wvBPF-GHPJXyHYKaDXxcmm7uGBfB1Fg3D7yWnvpg9Rk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/admin/user/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"user",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update role of user (admins only)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExNDM0MzU2LCJleHAiOjE3MTE0NDQzNTZ9.sSUrybttAZbAIfs_u_G3niIy6SZpn_dW6LKvHiVS-jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/admin/role/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"role",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete blog by id (ADMIN)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExNDM0MzU2LCJleHAiOjE3MTE0NDQzNTZ9.sSUrybttAZbAIfs_u_G3niIy6SZpn_dW6LKvHiVS-jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/admin/blog/13",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"admin",
+								"blog",
+								"13"
 							]
 						}
 					},

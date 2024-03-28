@@ -16,7 +16,7 @@ export class CreateBlogDto {
 
   @IsString()
   @IsOptional()
-  headerImage?: string;
+  headerImage?: any;
 
   @IsOptional()
   slug?: string;

@@ -5,21 +5,21 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User } from 'src/user/models/user.interface';
-import { UserService } from 'src/user/service/user.service';
-import { BlogService } from '../service/blog.service';
+import { BlogService } from '../blog.service';
+import { RetrievalService } from 'src/user/retrieval/retrieval.service';
 
 @Injectable()
 export class UserIsAuthorGuard implements CanActivate {
   constructor(
-    private userService: UserService,
+    private retrievalService: RetrievalService,
     private blogService: BlogService,
   ) {}
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const loggedUser: User = request.user;
-    const user = await this.userService.findOne(loggedUser.id);
+    const user = await this.retrievalService.findById(loggedUser.id);
     if (!user) {
-      throw new NotFoundException('No user found with this id');
+      throw new NotFoundException('You must be logged in');
     }
     const blogId = Number(request.params.id);
     const blog = await this.blogService.findOne(blogId);
