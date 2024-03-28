@@ -10,19 +10,42 @@
 			"name": "Users",
 			"item": [
 				{
-					"name": "Get One User",
+					"name": "Get user by id",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/user/1",
+							"raw": "localhost:3000/1",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"user",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by username",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/ahmed",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"ahmed"
 							]
 						}
 					},
@@ -99,13 +122,20 @@
 					"name": "Update new user",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Hussien\"\r\n}",
+							"raw": "{\r\n    \"name\": \"admin\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -113,14 +143,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/user/6",
+							"raw": "localhost:3000/user/7",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"user",
-								"6"
+								"7"
 							]
 						}
 					},
@@ -128,6 +158,18 @@
 				},
 				{
 					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.json().access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -162,7 +204,78 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo5LCJuYW1lIjoiYWhtZWQiLCJ1c2VybmFtZSI6ImFobWVkIiwiZW1haWwiOiJhaEBoLmNvbSIsInJvbGUiOiJ1c2VyIiwicHJvZmlsZUltZyI6bnVsbH0sImlhdCI6MTcxMTQyODM4NSwiZXhwIjoxNzExNDM4Mzg1fQ.Llcy_payPmPd2wG5Sa6qZmcVfq5FRqcIn-abGhKVMH4",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/pireb/Pictures/download.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/blog/upload/14",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"blog",
+								"upload",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/email/h@h.com",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"email",
+								"h@h.com"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "ad@admin.com",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blogs",
+			"item": [
+				{
+					"name": "Upload header image for blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
 									"type": "string"
 								}
 							]
@@ -193,38 +306,26 @@
 					"response": []
 				},
 				{
-					"name": "Get user by email",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/user/ah@test.com",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"user",
-								"ah@test.com"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Blogs",
-			"item": [
-				{
 					"name": "Create New blog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJwcm9maWxlSW1nIjpudWxsfSwiaWF0IjoxNzExNDM0MzU2LCJleHAiOjE3MTE0NDQzNTZ9.sSUrybttAZbAIfs_u_G3niIy6SZpn_dW6LKvHiVS-jQ",
+									"value": "{{TOKEN}}",
 									"type": "string"
 								}
 							]
@@ -232,13 +333,30 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"title\": \" blog123 !\",\r\n    \"body\": \"content test\",\r\n    \"description\": \"description of the blog\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test2",
+									"type": "text"
+								},
+								{
+									"key": "body",
+									"value": "testrrwqe32",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": " testeststset2322",
+									"type": "text"
+								},
+								{
+									"key": "headerImage",
+									"type": "file",
+									"src": "/C:/Users/pireb/Pictures/duck.png",
+									"disabled": true
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "localhost:3000/blogs",
@@ -261,7 +379,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTEyMTI5MDgsImV4cCI6MTcxMTIyMjkwOH0.ufVDXzLZet00TW0fW7TgTokah2YIq43BxT8UHoOTC_E",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJwYXNzd29yZCI6IiQyYiQxMiRuUjI2Q2lUTDd0SFI4TVc3Y3hwLlNleDBPMnYxdktZR1N2R1dYcGlrQkpJaml1R1BhWjNyeSIsInJvbGUiOiJhZG1pbiIsInByb2ZpbGVJbWciOm51bGx9LCJpYXQiOjE3MTE1ODgyNTksImV4cCI6MTcxMTU5ODI1OX0.6PzCiidzvQUzGgWC_HjYbykCl6exElZMhwMveiMgrFQ",
 									"type": "string"
 								}
 							]
@@ -269,7 +387,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3000/blogs?page=3&limit=1&title=First",
+							"raw": "localhost:3000/blogs?userId=9",
 							"host": [
 								"localhost"
 							],
@@ -279,26 +397,23 @@
 							],
 							"query": [
 								{
-									"key": "userId",
-									"value": "2",
+									"key": "page",
+									"value": "3",
 									"disabled": true
 								},
 								{
-									"key": "page",
-									"value": "3"
-								},
-								{
 									"key": "limit",
-									"value": "1"
-								},
-								{
-									"key": "likes[gte]",
-									"value": "0",
+									"value": "1",
 									"disabled": true
 								},
 								{
 									"key": "title",
-									"value": "First"
+									"value": "First",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": "9"
 								}
 							]
 						}
@@ -342,7 +457,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJuYW1lIjoiSGVzaGFtIiwidXNlcm5hbWUiOiJoZXNoYW0xOTAyIiwiZW1haWwiOiJoQHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwicHJvZmlsZUltZyI6ImVlZTRhMzg4LTEzNGUtNGJlNS1hYjA5LTgwZDAzMjdmOWE4YS1kdWNrLnBuZyJ9LCJpYXQiOjE3MTEzMTY2NjMsImV4cCI6MTcxMTMyNjY2M30.95j4WYoI_8Iozr-dBM_ndwHuH1gF8cp3J7gvO4SjmLo",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo3LCJuYW1lIjoiQWRtaW4iLCJ1c2VybmFtZSI6IkFkbWluIiwiZW1haWwiOiJhZEBhZG1pbi5jb20iLCJwYXNzd29yZCI6IiQyYiQxMiRuUjI2Q2lUTDd0SFI4TVc3Y3hwLlNleDBPMnYxdktZR1N2R1dYcGlrQkpJaml1R1BhWjNyeSIsInJvbGUiOiJhZG1pbiIsInByb2ZpbGVJbWciOm51bGx9LCJpYXQiOjE3MTE1ODgyNTksImV4cCI6MTcxMTU5ODI1OX0.6PzCiidzvQUzGgWC_HjYbykCl6exElZMhwMveiMgrFQ",
 									"type": "string"
 								}
 							]
@@ -359,14 +474,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/blogs/4",
+							"raw": "localhost:3000/blogs/11",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
 								"blogs",
-								"4"
+								"11"
 							]
 						}
 					},
