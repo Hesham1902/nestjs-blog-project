@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException, UseGuards } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UseGuards,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BlogEntity } from './models/blogs.entity';
+import { BlogEntity } from './models/blog.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateBlogDto } from './dto';
 import { User } from 'src/user/models/user.interface';
@@ -19,7 +24,7 @@ export class BlogService {
   constructor(
     @InjectRepository(BlogEntity)
     private readonly blogRepository: Repository<BlogEntity>,
-    private readonly retrievalServiceS: RetrievalService,
+    private readonly retrievalService: RetrievalService,
     private readonly uploadBlogService: UploadBlogsService,
   ) {}
 
@@ -32,15 +37,31 @@ export class BlogService {
     body: CreateBlogDto,
     headerImage?: Express.Multer.File,
   ): Promise<Blog> {
-    body.author = user;
+    // Verify that the user exists
+    const existingUser = await this.retrievalService.findById(user.id);
+    if (!existingUser) {
+      throw new NotFoundException(`User with ID ${user.id} not found`);
+    }
+
+    // Assign the user as the author of the blog
+    body.author = existingUser;
+
+    // Generate slug for the blog title
     body.slug = this.generateSlug(body.title);
+
     if (headerImage) {
+      // Upload header image to S3 and set the key in the blog body
       const key = `blogsImages/${uuidv4()}-${headerImage.originalname}`;
       await this.uploadBlogService.UploadToS3(headerImage, key);
       body.headerImage = key;
     }
-    return this.blogRepository.save(body);
-    // return 'test';
+
+    try {
+      const createdBlog = await this.blogRepository.save(body);
+      return createdBlog;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to create blog entry');
+    }
   }
 
   async findAllBlogs(queryObj) {
@@ -52,7 +73,7 @@ export class BlogService {
     let queryBuilder = this.blogRepository.createQueryBuilder('blog');
 
     if (userId || userId === 0) {
-      const userIsFound = await this.retrievalServiceS.findById(userId);
+      const userIsFound = await this.retrievalService.findById(userId);
       if (!userIsFound) {
         throw new NotFoundException('User with this id not found: ' + userId);
       }
