@@ -8,17 +8,17 @@ export class CommentEntity {
   id: number;
 
   @Column()
-  text: string;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  content: string;
 
   @ManyToOne(() => UserEntity, (user) => user.comments)
   user: UserEntity;
 
   @ManyToOne(() => BlogEntity, (blog) => blog.comments)
   blog: BlogEntity;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }
