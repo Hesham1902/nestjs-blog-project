@@ -7,9 +7,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { User } from 'src/user/models/user.interface';
 import { BlogService } from 'src/blog/blog.service';
 
-// TODO: Delete comments and must the author of the comment
-// TODO: FIND all comments
-
 @Injectable()
 export class CommentsService {
   constructor(
@@ -52,6 +49,7 @@ export class CommentsService {
     if (result.length === 0) {
       return { message: 'No comments found for this blog.' };
     }
+    return result;
   }
 
   async delete(blogId: number, commentId: number) {
