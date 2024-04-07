@@ -28,6 +28,7 @@ export class CommentsController {
   ) {
     return this.commentsService.create(blogId, user, comment);
   }
+
   @Get('comments/:blogId')
   findAllComments(@Param('blogId') blogId: number) {
     return this.commentsService.find(blogId);

@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtStrategy } from './guards/jwt.strategy';
 import { UserModule } from 'src/user/user.module';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserModule } from 'src/user/user.module';
       }),
     }),
     forwardRef(() => UserModule),
+    MailerModule,
   ],
   providers: [AuthService, JwtAuthGuard, JwtStrategy],
   controllers: [AuthController],

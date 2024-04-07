@@ -12,7 +12,7 @@ export class UserValidateGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    if (!request.user) {
+    if (!request.user || !request.user.verified) {
       return false;
     }
     const user: User = request.user;

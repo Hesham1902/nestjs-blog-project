@@ -33,6 +33,21 @@ export class UserEntity {
   @Column({ nullable: true })
   profileImg: string;
 
+  @Column({ default: false })
+  verified: boolean;
+
+  @Column({ default: false })
+  passwordResetCodeVerified: boolean;
+
+  @Column({ nullable: true })
+  emailVerifiedCode: string;
+
+  @Column({ nullable: true })
+  passwordResetCode: string;
+
+  @Column({ nullable: true })
+  passwordChangedAt: Date;
+
   @OneToMany(() => BlogEntity, (blog) => blog.author)
   blogs: BlogEntity[];
 

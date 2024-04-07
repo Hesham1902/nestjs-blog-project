@@ -14,6 +14,7 @@ export class CommentsService {
     private readonly commentRepository: Repository<CommentEntity>,
     private readonly blogService: BlogService,
   ) {}
+
   async create(blogId: number, user: User, comment: CreateCommentDto) {
     const blog = await this.blogService.findOne(blogId);
     if (!blog) {

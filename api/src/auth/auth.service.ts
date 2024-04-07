@@ -20,11 +20,11 @@ export class AuthService {
     return { access_token: token };
   }
 
-  hashPassword(password): Promise<string> {
+  createHash(password): Promise<string> {
     return bcrypt.hash(password, 12);
   }
 
-  comparePasswords(loginPass, originalPass): Promise<boolean> {
+  compareHashes(loginPass, originalPass): Promise<boolean> {
     return bcrypt.compare(loginPass, originalPass);
   }
 
@@ -36,13 +36,14 @@ export class AuthService {
       );
     }
     return {
-      result: this.comparePasswords(password, user.password),
+      result: await this.compareHashes(password, user.password),
       user,
     };
   }
 
   async login(body: LoginDto): Promise<object> {
     const { result, user } = await this.validateUser(body.email, body.password);
+    // console.log(result);
     if (!result) {
       throw new UnauthorizedException('Invalid login credentials');
     }

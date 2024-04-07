@@ -7,6 +7,7 @@ import { BlogModule } from './blog/blog.module';
 import { AdminModule } from './admin/admin.module';
 import { dataSourceOptions } from 'db/data-source';
 import { CommentsModule } from './comments/comments.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CommentsModule } from './comments/comments.module';
     BlogModule,
     AdminModule,
     CommentsModule,
+    MailerModule,
   ],
 })
 export class AppModule {}
