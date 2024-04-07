@@ -4,11 +4,13 @@ export interface User {
   id?: number;
   name?: string;
   username?: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
   role?: UserRole;
   blogs?: Blog[];
   profileImg?: string;
+  emailVerifiedCode?: string;
+  passwordResetCode?: string;
 }
 
 export enum UserRole {

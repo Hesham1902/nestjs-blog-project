@@ -8,9 +8,10 @@ import { RetrievalService } from './retrieval/retrieval.service';
 import { RetrievalController } from './retrieval/retrieval.controller';
 import { UploadController } from './upload/upload.controller';
 import { UploadService } from './upload/upload.service';
+import { MailerModule } from 'src/mailer/mailer.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserEntity]), AuthModule],
+  imports: [TypeOrmModule.forFeature([UserEntity]), AuthModule, MailerModule],
   controllers: [UserController, RetrievalController, UploadController],
   providers: [UserService, RetrievalService, UploadService],
   exports: [UserService, RetrievalService],

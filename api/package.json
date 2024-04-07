@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
+    "migration:generate": "npm run typeorm -- migration:generate",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.537.0",
@@ -32,7 +36,9 @@
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
     "nestjs-typeorm-paginate": "^4.0.4",
+    "nodemailer": "^6.9.13",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",
     "reflect-metadata": "^0.2.0",
@@ -51,6 +57,7 @@
     "@types/jest": "^29.5.2",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.3.1",
+    "@types/nodemailer": "^6.4.14",
     "@types/passport-jwt": "^4.0.1",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

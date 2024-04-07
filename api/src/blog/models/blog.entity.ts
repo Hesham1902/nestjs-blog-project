@@ -1,10 +1,14 @@
 import slugify from 'slugify';
+import { CommentEntity } from 'src/comments/models/comments.entity';
 import { UserEntity } from 'src/user/models/user.entity';
 import {
   BeforeUpdate,
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -31,9 +35,6 @@ export class BlogEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 
-  @Column({ default: 0 })
-  likes: number;
-
   @Column({ nullable: true })
   headerImage: string;
 
@@ -46,8 +47,15 @@ export class BlogEntity {
   @ManyToOne(() => UserEntity, (user) => user.blogs, { onDelete: 'CASCADE' })
   author: UserEntity;
 
-  //   @ManyToOne(() => UserEntity, (user) => user.blogs)
-  //   user: UserEntity;
+  @Column({ default: 0 })
+  likes: number;
+
+  @ManyToMany(() => UserEntity, (user) => user.likedBlogs)
+  @JoinTable()
+  usersWhoLiked: UserEntity[];
+
+  @OneToMany(() => CommentEntity, (comments) => comments.blog)
+  comments: CommentEntity[];
 
   @BeforeUpdate()
   updateTimeStampAndSlugs() {

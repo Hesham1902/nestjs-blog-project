@@ -6,7 +6,7 @@ import { User } from '../models/user.interface';
 export class RetrievalController {
   constructor(private retrievalService: RetrievalService) {}
 
-  @Get(':id')
+  @Get('id/:id')
   findById(@Param() params): Promise<User> {
     return this.retrievalService.findById(params.id);
   }
@@ -21,7 +21,7 @@ export class RetrievalController {
     return this.retrievalService.findByUsername(username);
   }
 
-  @Get()
+  @Get('all')
   findAll(@Query() queryObj: any) {
     return this.retrievalService.paginateFilter(queryObj);
   }

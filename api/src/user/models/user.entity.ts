@@ -2,11 +2,13 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserRole } from './user.interface';
-import { BlogEntity } from 'src/blog/models/blogs.entity';
+import { BlogEntity } from 'src/blog/models/blog.entity';
+import { CommentEntity } from 'src/comments/models/comments.entity';
 
 @Entity()
 export class UserEntity {
@@ -31,8 +33,29 @@ export class UserEntity {
   @Column({ nullable: true })
   profileImg: string;
 
+  @Column({ default: false })
+  verified: boolean;
+
+  @Column({ default: false })
+  passwordResetCodeVerified: boolean;
+
+  @Column({ nullable: true })
+  emailVerifiedCode: string;
+
+  @Column({ nullable: true })
+  passwordResetCode: string;
+
+  @Column({ nullable: true })
+  passwordChangedAt: Date;
+
   @OneToMany(() => BlogEntity, (blog) => blog.author)
   blogs: BlogEntity[];
+
+  @ManyToMany(() => BlogEntity, (blog) => blog.likes)
+  likedBlogs: BlogEntity[];
+
+  @OneToMany(() => CommentEntity, (comments) => comments.user)
+  comments: CommentEntity[];
 
   @BeforeInsert()
   emailToLowercase() {

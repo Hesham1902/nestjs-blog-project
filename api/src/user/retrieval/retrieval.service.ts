@@ -32,7 +32,7 @@ export class RetrievalService {
     delete filters.page;
     delete filters.limit;
 
-    console.log(queryObj, filters);
+    // console.log(queryObj, filters);
 
     const apiFeatures = await new ApiFeatures<User>(queryBuilder, queryObj)
       .filter(filters)
@@ -50,8 +50,7 @@ export class RetrievalService {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    console.log(email);
+  async findByEmail(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       throw new NotFoundException(`No User with this ${email} found`);

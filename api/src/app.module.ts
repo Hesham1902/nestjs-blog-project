@@ -5,20 +5,26 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { BlogModule } from './blog/blog.module';
 import { AdminModule } from './admin/admin.module';
+import { dataSourceOptions } from 'db/data-source';
+import { CommentsModule } from './comments/comments.module';
+import { MailerModule } from './mailer/mailer.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      url: process.env.DATABASE_URL,
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
+    // TypeOrmModule.forRoot({
+    //   type: 'postgres',
+    //   url: process.env.DATABASE_URL,
+    //   autoLoadEntities: true,
+    //   synchronize: true,
+    // }),
     UserModule,
     AuthModule,
     BlogModule,
     AdminModule,
+    CommentsModule,
+    MailerModule,
   ],
 })
 export class AppModule {}
