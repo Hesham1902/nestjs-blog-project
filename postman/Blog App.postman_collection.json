@@ -909,7 +909,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "localhost:3000/user/verify-email/332f15",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"verify-email",
+								"332f15"
+							]
 						}
 					},
 					"response": []

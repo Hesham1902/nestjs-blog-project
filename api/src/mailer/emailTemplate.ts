@@ -127,7 +127,7 @@ export const signupTemplate = (link) => `
             <!-- start copy -->
             <tr>
               <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-                <p style="margin: 0;">We just need to verify your email address before using TruthApp.</p>
+                <p style="margin: 0;">We just need to verify your email address before using BlogifyApp.</p>
               </td>
             </tr>
             <!-- end copy -->
