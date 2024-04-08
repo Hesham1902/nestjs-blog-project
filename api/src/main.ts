@@ -9,6 +9,6 @@ async function bootstrap() {
     new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
   );
   app.useGlobalFilters(new GlobalExceptionFilter());
-  await app.listen(3000);
+  await app.listen(process.env.PORT, '0.0.0.0');
 }
 bootstrap();
