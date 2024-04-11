@@ -8,6 +8,7 @@ import { AdminModule } from './admin/admin.module';
 import { dataSourceOptions } from 'db/data-source';
 import { CommentsModule } from './comments/comments.module';
 import { MailerModule } from './mailer/mailer.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -26,5 +27,6 @@ import { MailerModule } from './mailer/mailer.module';
     CommentsModule,
     MailerModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
