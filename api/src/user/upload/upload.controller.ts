@@ -14,7 +14,10 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ExtractUser } from '../decorators/get-user.decorator';
 import { User } from '../models/user.interface';
 import { UploadService } from './upload.service';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('USERS')
+@ApiBearerAuth()
 @Controller('upload')
 export class UploadController {
   constructor(private uploadService: UploadService) {}
@@ -34,6 +37,19 @@ export class UploadController {
     }),
   };
 */
+
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   @Patch()

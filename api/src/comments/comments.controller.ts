@@ -13,7 +13,9 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { ExtractUser } from 'src/user/decorators/get-user.decorator';
 import { User } from 'src/user/models/user.interface';
 import { UserIsCommentCreatorGuard } from './guards/is-comments-creator.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('COMMENTS')
 @UseGuards(JwtAuthGuard)
 @Controller()
 export class CommentsController {

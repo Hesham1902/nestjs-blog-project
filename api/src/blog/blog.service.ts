@@ -109,17 +109,17 @@ export class BlogService {
     try {
       const result: DeleteResult = await this.blogRepository.delete(id);
       if (result.affected !== 1 || !result.affected) {
-        throw new Error('Could not delete the user from the database');
+        throw new Error('Could not delete the blog from the database');
       }
       return {
         success: true,
-        message: 'User deleted successfully',
+        message: 'Blog deleted successfully',
         result: result,
       };
     } catch (error) {
       return {
         success: false,
-        message: 'An error occurred while deleting the user',
+        message: 'An error occurred while deleting the blog from DB',
         error,
         status: error.statusCode,
       };

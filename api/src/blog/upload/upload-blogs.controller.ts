@@ -16,7 +16,10 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UploadBlogsService } from './upload-blogs.service';
 import { UserIsAuthorGuard } from '../guards/user-is-author.guard';
 import { BlogService } from '../blog.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('BLOGS')
+@ApiBearerAuth()
 @Controller('blog')
 export class UploadBlogsController {
   constructor(

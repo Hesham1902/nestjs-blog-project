@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { RetrievalService } from './retrieval.service';
 import { User } from '../models/user.interface';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('USERS')
 @Controller()
 export class RetrievalController {
   constructor(private retrievalService: RetrievalService) {}

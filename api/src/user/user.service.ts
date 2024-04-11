@@ -76,6 +76,9 @@ export class UserService {
   }
 
   async forgetPassword(email: string) {
+    if (!email) {
+      throw new BadRequestException('Email is required');
+    }
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       throw new HttpException('User not found', 404);
@@ -128,8 +131,9 @@ export class UserService {
     const passwordHash = await this.authService.createHash(body.password);
     user.password = passwordHash;
     user.passwordChangedAt = new Date();
+    user.passwordResetCodeVerified = false;
     await this.userRepository.save(user);
-    return { user };
+    return { status: 'sucess', message: 'Password changed' };
   }
 
   async verifyEmail(code: string) {
@@ -172,7 +176,19 @@ export class UserService {
     return crypto.createHash('sha256').update(code).digest('hex');
   }
 
-  updateRoleOfUser(role: UserRole, id: string): Promise<any> {
-    return this.userRepository.update(id, { role });
+  async updateRoleOfUser(role: UserRole, id: number): Promise<any> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`There is no user with this id: ${id}`);
+    }
+    if (
+      role !== UserRole.USER &&
+      role !== UserRole.ADMIN &&
+      role !== UserRole.EDITOR &&
+      role !== UserRole.MANAGER
+    ) {
+      throw new BadRequestException('You must provide a valid role');
+    }
+    return this.userRepository.save(user);
   }
 }

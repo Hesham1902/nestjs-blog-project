@@ -13,7 +13,11 @@ import { UserService } from 'src/user/user.service';
 import { RolesGuard } from './guards/roles.guard';
 import { hasRoles } from 'src/auth/decorators/roles.decorator';
 import { UserRole } from 'src/user/models/user.interface';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { UpdateResult } from 'typeorm';
 
+@ApiTags('Admin')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('admin')
 export class AdminController {
@@ -30,15 +34,30 @@ export class AdminController {
 
   @Delete('user/:id')
   deleteUser(@Param('id') id: number): Promise<any> {
+    console.log(id);
     return this.userService.deleteOne(id);
   }
 
   @hasRoles(UserRole.ADMIN)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        role: {
+          type: 'string',
+        },
+      },
+    },
+    required: true,
+  })
   @Patch('role/:id')
-  updateRoleOfUser(
+  async updateRoleOfUser(
     @Body('role') role: any,
-    @Param('id', ParseIntPipe) id: string,
-  ): Promise<any> {
-    return this.userService.updateRoleOfUser(role, id);
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<{ message: string; result: UpdateResult }> {
+    return {
+      message: 'Role updated successfully',
+      result: await this.userService.updateRoleOfUser(role, id),
+    };
   }
 }

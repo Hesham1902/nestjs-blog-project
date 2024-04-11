@@ -21,7 +21,10 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 import { UserIsAuthorGuard } from './guards/user-is-author.guard';
 import { DeleteResult } from 'typeorm';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('BLOGS')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('blogs')
 export class BlogController {
@@ -37,7 +40,6 @@ export class BlogController {
     return this.blogService.create(user, body, headerImage);
   }
 
-  //Corrupted One
   @Get()
   findAllBlogs(@Query() queryObj) {
     if (!queryObj.userId) {

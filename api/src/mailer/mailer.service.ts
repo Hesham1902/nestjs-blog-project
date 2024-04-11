@@ -11,7 +11,7 @@ export class MailerService {
   createTransport() {
     return nodemailer.createTransport({
       host: this.configService.getOrThrow<string>('HOST'),
-      port: this.configService.getOrThrow('PORT'),
+      port: this.configService.getOrThrow('EMAIL_PORT'),
       secure: true,
       //   secure: this.configService.getOrThrow('PORT') === 587 ? false : true, // Use `true` for port 465, `false` for all other ports
       auth: {
@@ -25,7 +25,7 @@ export class MailerService {
     const to = body.email;
     const subject = 'welcome to our blogify website';
     const link = `${this.configService.getOrThrow('BASE_URL')}/user/verify-email/${body.resetCode}`;
-    console.log(link);
+    // console.log(link);
     const html = signupTemplate(link);
     const from = 'Blogify App <heshammaher@outlook.com>';
     return this.send({ from, to, subject, html });
@@ -34,7 +34,6 @@ export class MailerService {
   sendChangeingPasswordCode(body: { email: string; resetCode: string }) {
     const to = body.email;
     const subject = 'reset code to change your password';
-    // const text = `your reset code to change your passsword is ${body.resetCode}`;
     const html = resetPasswordTemplate(body.resetCode);
     const from = 'Blogify App <heshammaher@outlook.com>';
     return this.send({ from, to, subject, html });
